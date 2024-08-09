@@ -179,6 +179,8 @@ public class Model {
                     targetY--;
                 } else if (board.tile(x, targetY).wasMerged()) {
                     targetY --;
+                } else {
+                    score += board.tile(x, targetY).value() * 2;
                 }
                 break;
             }
@@ -204,9 +206,11 @@ public class Model {
 
     public void tilt(Side side) {
         // TODO: Tasks 8 and 9. Fill in this function.
+        board.setViewingPerspective(side);
         for (int i = 0; i < board.size(); i ++) {
             tiltColumn(i);
         }
+        board.setViewingPerspective(side.NORTH);
     }
 
     /** Tilts every column of the board toward SIDE.

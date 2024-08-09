@@ -16,14 +16,14 @@ public class Main {
     static final long RANDOM_SEED = 0;
 
     /** If true, the custom start is used. Otherwise, the board starts off blank. */
-    static final boolean USE_CUSTOM_START = false;
+    static final boolean USE_CUSTOM_START = true;
 
     /** Custom starting state of the game. Useful for debugging. */
     static final Model CUSTOM_START = new Model(new int[][]{
-            {2, 0, 2, 128},
-            {0, 0, 8, 0},
-            {8, 64, 0, 128},
-            {4, 64, 8, 256},
+            {2, 0, 2, 0},
+            {0, 0, 0, 0},
+            {0, 2, 0, 0},
+            {0, 0, 4, 0},
     }, 0);
 
     public static void main(String[] args) {
