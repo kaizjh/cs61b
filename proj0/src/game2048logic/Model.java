@@ -183,8 +183,9 @@ public class Model {
                 break;
             }
         }
-
-        board.move(x, targetY, currTile);
+        if (targetY != y) {
+            board.move(x, targetY, board.tile(x, y));
+        }
     }
 
     /** Handles the movements of the tilt in column x of the board
