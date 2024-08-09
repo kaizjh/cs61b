@@ -164,27 +164,26 @@ public class Model {
 
         // TODO: Tasks 5, 6, and 10. Fill in this function.
 
-        /** After this while loop, we will get targetY, and it gets only two possible targetYs.
-         *  Either it encounters a tile, or it remains null after reaching the boundary.
-         *  If it is a tile, then is its value equals to curr_value? Was it merged? We will get the answer after the loop.
-         */
         while (targetY < board.size()) {
-            targetY++;
-            if (targetY == board.size()) {
-                targetY --;
-                break;
-            }
-            if (board.tile(x, targetY) != null) {
-                if (board.tile(x, targetY).value() != myValue) {
-                    targetY--;
-                } else if (board.tile(x, targetY).wasMerged()) {
-                    targetY --;
-                } else {
-                    score += board.tile(x, targetY).value() * 2;
+            targetY ++;
+
+            // Avoiding ArrayIndexOutOfBoundsException (targetY)
+            if (targetY < board.size()) {
+                if (board.tile(x, targetY) != null) {
+                    if (board.tile(x, targetY).value() == myValue && !board.tile(x, targetY).wasMerged()) {
+                        score += board.tile(x, targetY).value() * 2;
+
+                        // Only merge will keep the position
+                        targetY ++;
+                    }
+                    break;
                 }
-                break;
             }
         }
+
+        // This code will get targetY that is not-value-equal or was-merged or out-of-size back into the right position
+        targetY --;
+
         if (targetY != y) {
             board.move(x, targetY, board.tile(x, y));
         }
