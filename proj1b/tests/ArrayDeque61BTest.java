@@ -129,6 +129,7 @@ public class ArrayDeque61BTest {
     }
 
     @Test
+    /** Tests removeFirst and removeLast, remove empty array, remove full array, remove-resize. */
     public void testRemoveFirstAndRemoveLast() {
         ArrayDeque61B<Integer> ad1 = new ArrayDeque61B<> ();
         assertThat(ad1.removeFirst()).isEqualTo(null);
@@ -148,6 +149,11 @@ public class ArrayDeque61BTest {
         assertThat(ad1.removeFirst()).isEqualTo(1);
         assertThat(ad1.removeLast()).isEqualTo(7);
         assertThat(ad1.removeLast()).isEqualTo(6); // Resize [0, 4, 5]
+    }
+
+    @Test
+    public void testGetRecursive() {
+        System.out.println("No need to implement and test getRecursive for proj 1b");
     }
 
 }
