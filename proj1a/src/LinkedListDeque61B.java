@@ -46,6 +46,7 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
     }
 
     @Override
+    /** A big usage of this function is turing a non-iterable LinkedListDeque61B into an iterable ArrayList. */
     public List<T> toList() {
         List<T> returnList = new ArrayList<>();
         for (Node tmp = sentinel.next; tmp != sentinel; tmp = tmp.next) {

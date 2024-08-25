@@ -1,5 +1,7 @@
 /* Imports the required audio library from the
  * edu.princeton.cs.algs4 package. */
+import deque.Deque61B;
+import deque.LinkedListDeque61B;
 import edu.princeton.cs.algs4.StdAudio;
 import org.junit.jupiter.api.Test;
 import gh2.GuitarString;
@@ -80,6 +82,28 @@ public class TestGuitarString  {
         // Check that new sample is correct, using tolerance of 0.001.
         String errorMsg = "Wrong tic value. Try running the testTic method in TestGuitarString.java";
         assertWithMessage(errorMsg).that(s5).isWithin(0.001).of(expected);
+    }
+
+    @Test
+    public void test() {
+        Deque61B<String> lld1 = new LinkedListDeque61B<>();
+
+        lld1.addLast("front");
+        lld1.addLast("middle");
+        lld1.addLast("back");
+        for (String s : lld1) {
+            System.out.println(s);
+        }
+    }
+
+    @Test
+    public void addLastTestBasicWithoutToList() {
+        Deque61B<String> lld1 = new LinkedListDeque61B<>();
+
+        lld1.addLast("front"); // after this call we expect: ["front"]
+        lld1.addLast("middle"); // after this call we expect: ["front", "middle"]
+        lld1.addLast("back"); // after this call we expect: ["front", "middle", "back"]
+        assertThat(lld1).containsExactly("front", "middle", "back");
     }
 }
 
