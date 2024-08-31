@@ -1,6 +1,7 @@
 package deque;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class LinkedListDeque61B<T> implements Deque61B<T> {
@@ -112,4 +113,48 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
     public T getRecursive(int index) {
         return getRecursive(index, sentinel);
     }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new LinkedListDeque61BIterator();
+    }
+
+    private class LinkedListDeque61BIterator implements Iterator<T> {
+
+        private int wizPos;
+
+        public LinkedListDeque61BIterator() {
+            wizPos = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return wizPos < size;
+        }
+
+        @Override
+        public T next() {
+            T returnItem = get(wizPos);
+            wizPos += 1;
+            return returnItem;
+        }
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) { return true; }
+
+        if (other instanceof LinkedListDeque61B<?> otherDeque61B) {
+            if (this.size != otherDeque61B.size()) { return false; }
+            for(int i = 0; i < size; i ++) {
+                if (otherDeque61B.get(i) != get(i)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public String toString() { return toList().toString(); }
 }

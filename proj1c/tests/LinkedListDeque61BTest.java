@@ -1,7 +1,9 @@
+import deque.Deque61B;
+import deque.LinkedListDeque61B;
+import edu.princeton.cs.algs4.In;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
 
 /** Performs some basic linked list tests. */
 public class LinkedListDeque61BTest {
@@ -135,5 +137,54 @@ public class LinkedListDeque61BTest {
         assertThat(lld1.toList()).containsExactly(3, -73, 12).inOrder();
         assertThat(lld1.removeLast()).isEqualTo(12);
         assertThat(lld1.toList()).containsExactly(3, -73).inOrder();
+    }
+
+    @Test
+    /** .containsExactly works only lld1's .iterator works. */
+    public void iteratorTestWithoutToList() {
+        Deque61B<String> lld1 = new LinkedListDeque61B<>();
+        lld1.addLast("front");
+        lld1.addLast("middle");
+        lld1.addLast("back"); // after this call we expect: ["front", "middle", "back"]
+        assertThat(lld1).containsExactly("front", "middle", "back");
+
+        Deque61B<Integer> lld2 = new LinkedListDeque61B<>();
+        lld2.addFirst(1);
+        lld2.addFirst(2);
+        lld2.addFirst(3);
+        assertThat(lld2).containsExactly(3, 2, 1);
+    }
+
+    @Test
+    /** Tests equal and unequal. */
+    public void testEquals() {
+        Deque61B<String> lld1 = new LinkedListDeque61B<>();
+        Deque61B<String> lld2 = new LinkedListDeque61B<>();
+        lld1.addLast("front");
+        lld1.addLast("middle");
+        lld1.addLast("back");
+        lld2.addLast("front");
+        lld2.addLast("middle");
+        lld2.addLast("back");
+        assertThat(lld1).isEqualTo(lld2);
+
+        Deque61B<String> lld3 = new LinkedListDeque61B<>();
+        lld3.addLast("foo");
+        assertThat(lld1.equals(lld3)).isFalse();
+    }
+
+    @Test
+    /** Tests toString though output. */
+    public void testToString() {
+        Deque61B<String> lld1 = new LinkedListDeque61B<>();
+        lld1.addLast("front");
+        lld1.addLast("middle");
+        lld1.addLast("back");
+        System.out.println(lld1);
+
+        Deque61B<Integer> lld2 = new LinkedListDeque61B<>();
+        lld2.addFirst(1);
+        lld2.addFirst(2);
+        System.out.println(lld2);
     }
 }

@@ -64,9 +64,7 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
     }
 
     @Override
-    public int size() {
-        return size;
-    }
+    public int size() { return size; }
 
     @Override
     public T removeFirst() {

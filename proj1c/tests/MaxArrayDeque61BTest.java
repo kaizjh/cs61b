@@ -20,5 +20,11 @@ public class MaxArrayDeque61BTest {
         mad.addFirst("2");
         mad.addFirst("fury road");
         assertThat(mad.max()).isEqualTo("fury road");
+
+        MaxArrayDeque61B<String> mad2 = new MaxArrayDeque61B<>();
+        mad2.addFirst("");
+        mad2.addFirst("2");
+        mad2.addFirst("fury road");
+        assertThat(mad.max(new StringLengthComparator())).isEqualTo("fury road");
     }
 }
