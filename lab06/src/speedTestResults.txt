@@ -1,0 +1,48 @@
+Please enter desired length of each string: 100000
+
+Enter # strings to insert into the maps: 5
+class ULLMap: 0.01 sec
+class BSTMap: 0.00 sec
+Java's Built-in TreeMap: 0.00 sec
+Java's Built-in HashMap: 0.00 sec
+
+Enter # strings to insert into the maps: 25000
+class ULLMap: 18.92 sec
+class BSTMap: 12.47 sec
+Java's Built-in TreeMap: 12.77 sec
+Java's Built-in HashMap: 12.44 sec
+
+Enter # strings to insert into the maps: 49999
+--Stack Overflow -- couldn't add 49999 strings of length 50000.
+class BSTMap: 26.50 sec
+Java's Built-in TreeMap: 26.23 sec
+Java's Built-in HashMap: 25.92 sec
+
+Enter # strings to insert into the maps: 50000
+Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+
+结论：这些map都非常占内存（50000的时候已经out of memory了），而且数据量大起来的时候时间消耗也比较长，其中ULLMap时间和空间的消耗都是最多的，
+我按照课程作业编写的BSTMap时间和空间的消耗应该和Java自带的两个差不多。
+
+
+
+
+
+
+Enter # strings to insert into the maps: 10000
+class ULLMap: 5.67 sec
+class BSTMap: 4.95 sec
+Java's Built-in TreeMap: 4.89 sec
+Java's Built-in HashMap: 5.05 sec
+
+Enter # strings to insert into the maps: 37000
+class ULLMap: 35.65 sec
+class BSTMap: 19.43 sec
+Java's Built-in TreeMap: 19.20 sec
+Java's Built-in HashMap: 19.24 sec
+
+Enter # strings to insert into the maps: 45000
+--Stack Overflow -- couldn't add 45000 strings of length 50000.
+class BSTMap: 23.82 sec
+Java's Built-in TreeMap: 23.06 sec
+Java's Built-in HashMap: 22.43 sec

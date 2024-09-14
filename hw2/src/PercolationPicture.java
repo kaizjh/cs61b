@@ -10,7 +10,7 @@ public class PercolationPicture {
     private static final int DELAY = 100;
 
     // draw N-by-N percolation system
-    public static void draw(Percolation perc, int N) {
+    public static void draw(PercolationPrevious perc, int N) {
         StdDraw.clear();
         StdDraw.setPenColor(StdDraw.BLACK);
         StdDraw.setXscale(-.05 * N, 1.05 * N);
@@ -55,7 +55,7 @@ public class PercolationPicture {
     private static void simulateFromFile(String filename) {
         In in = new In(filename);
         int N = in.readInt();
-        Percolation perc = new Percolation(N);
+        PercolationPrevious perc = new PercolationPrevious(N);
 
         // turn on animation mode
         show(0);

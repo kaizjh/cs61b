@@ -17,7 +17,7 @@ public class InteractivePercolationVisualizer {
         // repeatedly open site specified my mouse click and draw resulting system
         StdOut.println(N);
 
-        Percolation perc = new Percolation(N);
+        PercolationPrevious perc = new PercolationPrevious(N);
         PercolationPicture.draw(perc, N);
         PercolationPicture.show(DELAY);
         int lastClickedI = -1;

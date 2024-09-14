@@ -16,6 +16,7 @@ public class RedBlackTree<T extends Comparable<T>> {
          * @param isBlack
          * @param item
          */
+        // 这行代码我是第一次见（可能见过类似的），很巧妙，虽然是重载了构造函数，但两者只差了两个参数而已，函数体一样，就可以用这个方法减少重复代码。
         RBTreeNode(boolean isBlack, T item) {
             this(isBlack, item, null, null);
         }

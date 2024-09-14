@@ -3,7 +3,7 @@ import org.junit.jupiter.api.Test;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class PercolationTest {
+public class PercolationPreviousTest {
 
     /**
      * Enum to represent the state of a cell in the grid. Use this enum to help you write tests.
@@ -27,7 +27,7 @@ public class PercolationTest {
      * Use this method in your tests to see if isOpen and isFull are returning the
      * correct things.
      */
-    private static Cell[][] getState(int N, Percolation p) {
+    private static Cell[][] getState(int N, PercolationPrevious p) {
         Cell[][] state = new Cell[N][N];
         for (int r = 0; r < N; r++) {
             for (int c = 0; c < N; c++) {
@@ -42,7 +42,7 @@ public class PercolationTest {
     @Test
     public void basicTest() {
         int N = 5;
-        Percolation p = new Percolation(N);
+        PercolationPrevious p = new PercolationPrevious(N);
         // open sites at (r, c) = (0, 1), (2, 0), (3, 1), etc. (0, 0) is top-left
         int[][] openSites = {
                 {0, 1},
@@ -69,7 +69,7 @@ public class PercolationTest {
     @Test
     public void oneByOneTest() {
         int N = 1;
-        Percolation p = new Percolation(N);
+        PercolationPrevious p = new PercolationPrevious(N);
         p.open(0, 0);
         Cell[][] expectedState = {
                 {Cell.FULL}
@@ -81,8 +81,27 @@ public class PercolationTest {
     // TODO: Using the given tests above as a template,
     //       write some more tests and delete the fail() line
     @Test
-    public void yourFirstTestHere() {
-        fail("Did you write your own tests?");
-    }
+    public void testNumberOfOpenSitesAndToFull() {
 
+        PercolationPrevious p = new PercolationPrevious(5);
+        int[][] openSites = {
+                {0, 1},
+                {2, 0},
+                {3, 1},
+                {4, 1},
+                {1, 0},
+                {1, 1}
+        };
+        for (int[] site : openSites) {
+            p.open(site[0], site[1]);
+        }
+        assertThat(p.numberOfOpenSites()).isEqualTo(6);
+
+        assertThat(p.percolates()).isFalse();
+        p.open(3, 0);
+        assertThat(p.numberOfOpenSites()).isEqualTo(7);
+
+        assertThat(p.isFull(3, 1)).isTrue();
+        assertThat(p.percolates()).isTrue();
+    }
 }

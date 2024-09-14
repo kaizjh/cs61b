@@ -13,7 +13,7 @@ public class PercolationStats {
         this.T = T;
         double[] ratio = new double[T];
         for (int i = 0; i < T; i += 1) {
-            Percolation p = new Percolation(N);
+            PercolationPrevious p = new PercolationPrevious(N);
             while (!p.percolates()) {
                 int randRow = StdRandom.uniform(N);
                 int randCol = StdRandom.uniform(N);
