@@ -159,6 +159,7 @@ public class TestRedBlackTree {
         RedBlackTree<Integer> rbtree = new TestableRedBlackTree();
         rbtree.insert(10);
         rbtree.insert(15);
+        // LLRB tree 不能出现红色的在右边，通过旋转可以解决这个问题
 
         /*
         LLRB Tree Representation:

@@ -1,3 +1,5 @@
+import java.util.Comparator;
+
 public class RedBlackTree<T extends Comparable<T>> {
 
     /* Root of the tree. */
@@ -52,6 +54,9 @@ public class RedBlackTree<T extends Comparable<T>> {
      */
     void flipColors(RBTreeNode<T> node) {
         // TODO: YOUR CODE HERE
+        node.isBlack = !node.isBlack;
+        node.left.isBlack = !node.left.isBlack;
+        node.right.isBlack = !node.right.isBlack;
     }
 
     /**
@@ -63,7 +68,19 @@ public class RedBlackTree<T extends Comparable<T>> {
      */
     RBTreeNode<T> rotateRight(RBTreeNode<T> node) {
         // TODO: YOUR CODE HERE
-        return null;
+        RBTreeNode nodeCopy = new RBTreeNode(node.isBlack, node.item, node.left, node.right);
+        RBTreeNode leftCopy = new RBTreeNode(node.left.isBlack, node.left.item, node.left.left, node.left.right);
+
+        // 左边的节点向右旋转成为新的node，新node的颜色是原来node的颜色，原来node向右旋转成为了新node的右子树
+        node = node.left;
+        node.right = nodeCopy;
+        node.isBlack = nodeCopy.isBlack;
+
+        // 右节点（原来的node向右旋转而来）的左子树是原来的左节点的右子树，右节点的颜色是原来左节点的，右节点的右子树保持原来节点的不变
+        node.right.left = leftCopy.right;
+        node.right.isBlack = leftCopy.isBlack;
+
+        return node;
     }
 
     /**
@@ -75,7 +92,19 @@ public class RedBlackTree<T extends Comparable<T>> {
      */
     RBTreeNode<T> rotateLeft(RBTreeNode<T> node) {
         // TODO: YOUR CODE HERE
-        return null;
+
+        // 向左旋转只是将向右旋转代码中的left全部换成了right，right全部换成了left
+        RBTreeNode nodeCopy = new RBTreeNode(node.isBlack, node.item, node.left, node.right);
+        RBTreeNode rightCopy = new RBTreeNode(node.right.isBlack, node.right.item, node.right.left, node.right.right);
+
+        node = node.right;
+        node.left = nodeCopy;
+        node.isBlack = nodeCopy.isBlack;
+
+        node.left.right = rightCopy.left;
+        node.left.isBlack = rightCopy.isBlack;
+
+        return node;
     }
 
     /**
@@ -116,7 +145,45 @@ public class RedBlackTree<T extends Comparable<T>> {
 
         // TODO: Color flip
 
-        return null; //fix this return statement
+        if (node == null) {
+            return new RBTreeNode<>(true, item);
+        }
+
+        RBTreeNode<T> curr = node;
+        RBTreeNode<T> parent = null;
+        while (curr.item.compareTo(item) != 0) {
+            if (curr.item.compareTo(item) < 0) {
+                if (curr.right == null) { // 到达右leaf，为当前节点新增一个右子树
+                    curr.right = new RBTreeNode<>(false, item);
+
+                    if (isRed(curr)) { // 如果curr 是红色，则parent 一定不是红色，curr.left 一定不是红色
+                        rotateLeft(curr);
+                        rotateRight(parent);
+                    } else { // 如果curr 不是红色，那么parent 一定不是红色，curr.left 有两种情况
+                        if (isRed(curr.left)) { // 如果 curr.left 是红色，对当前节点进行颜色反转
+                            flipColors(curr);
+                        } else { // 如果curr.left 是红色，向左旋转当前节点
+                            rotateLeft(curr);
+                        }
+                    }
+                    break;
+                }
+                parent = curr;
+                curr = curr.right;
+            } else {
+                if (curr.left == null) { // 到达左leaf
+                    curr.left = new RBTreeNode<>(false, item);
+
+                    if (isRed(curr)) { // 如果当前节点为红色，则通过向右旋转父节点来消除两个连续节点同时为红色的异常
+                        rotateRight(parent);
+                    }
+                    break;
+                }
+                parent = curr;
+                curr = curr.left;
+            }
+        }
+        return root;
     }
 
 }
