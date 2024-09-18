@@ -191,15 +191,15 @@
 
 //// ChatGPT：
 //
-//package hashmap;
-//
-//import java.util.*;
-//
-///**
-// * A hash table-backed Map implementation.
-// *
-// * Assumes null keys will never be inserted, and does not resize down upon remove().
-// */
+package hashmap;
+
+import java.util.*;
+
+/**
+ * A hash table-backed Map implementation.
+ *
+ * Assumes null keys will never be inserted, and does not resize down upon remove().
+ */
 //public class MyHashMap<K, V> implements Map61B<K, V> {
 //
 //    private static final int DEFAULT_INITIAL_CAPACITY = 16;
