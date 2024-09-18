@@ -167,52 +167,83 @@ public class RedBlackTree<T extends Comparable<T>> {
 
         // TODO: Color flip
 
+        // 这是我的写法，感觉写的太烂了，太复杂了，细节问题搞得我头晕眼花！
+//        if (node == null) {
+//            return new RBTreeNode<>(true, item);
+//        }
+//
+//        RBTreeNode<T> curr = node;
+//        RBTreeNode<T> parent = null;
+//        while (curr.item.compareTo(item) != 0) {
+//            if (curr.item.compareTo(item) < 0) {
+//                if (curr.right == null) { // 到达右leaf，为当前节点新增一个右子树
+//                    curr.right = new RBTreeNode<>(false, item);
+//
+//                    if (isRed(curr)) { // 此时，如果curr 是红色，则parent 一定不是红色，且curr 一定“左倾”，curr.left 一定不是红色
+//                        rotateLeft(curr);
+//                        flipColors(rotateRight(parent));
+//                        if (root.right.isBlack == false && root.left.isBlack == false) {
+//                            flipColors(root);
+//                        }
+//                    } else { // 如果curr 不是红色，那么parent 一定不是红色，curr.left 有两种情况
+//                        if (isRed(curr.left)) { // 如果 curr.left 是红色，对当前节点进行颜色反转
+//                            flipColors(curr);
+//                        } else { // 如果curr.left 不是红色，向左旋转当前节点
+//                            rotateLeft(curr);
+//                        }
+//                    }
+//                    break;
+//                }
+//                parent = curr;
+//                curr = curr.right;
+//            } else {
+//                if (curr.left == null) { // 到达左leaf
+//                    curr.left = new RBTreeNode<>(false, item);
+//
+//                    if (isRed(curr)) { // 如果当前节点为红色，则通过向右旋转父节点来消除两个连续节点同时为红色的异常
+//                        flipColors(rotateRight(parent));
+//                        if (root.right.isBlack == false && root.left.isBlack == false) {
+//                            flipColors(root);
+//                        }
+//                    }
+//                    break;
+//                }
+//                parent = curr;
+//                curr = curr.left;
+//            }
+//        }
+//
+//        return root;
+
+        // 这是ChatGPT写的代码，写的真好。感觉我总是不能抓住问题的核心，将问题明确分成多个小问题，于是陷入无尽的细节之中，便被耗光了精力
         if (node == null) {
-            return new RBTreeNode<>(true, item);
+            // Insert new red node.
+            return new RBTreeNode<>(false, item);
         }
 
-        RBTreeNode<T> curr = node;
-        RBTreeNode<T> parent = null;
-        while (curr.item.compareTo(item) != 0) {
-            if (curr.item.compareTo(item) < 0) {
-                if (curr.right == null) { // 到达右leaf，为当前节点新增一个右子树
-                    curr.right = new RBTreeNode<>(false, item);
-
-                    if (isRed(curr)) { // 此时，如果curr 是红色，则parent 一定不是红色，且curr 一定“左倾”，curr.left 一定不是红色
-                        rotateLeft(curr);
-                        flipColors(rotateRight(parent));
-                        if (root.right.isBlack == false && root.left.isBlack == false) {
-                            flipColors(root);
-                        }
-                    } else { // 如果curr 不是红色，那么parent 一定不是红色，curr.left 有两种情况
-                        if (isRed(curr.left)) { // 如果 curr.left 是红色，对当前节点进行颜色反转
-                            flipColors(curr);
-                        } else { // 如果curr.left 不是红色，向左旋转当前节点
-                            rotateLeft(curr);
-                        }
-                    }
-                    break;
-                }
-                parent = curr;
-                curr = curr.right;
-            } else {
-                if (curr.left == null) { // 到达左leaf
-                    curr.left = new RBTreeNode<>(false, item);
-
-                    if (isRed(curr)) { // 如果当前节点为红色，则通过向右旋转父节点来消除两个连续节点同时为红色的异常
-                        flipColors(rotateRight(parent));
-                        if (root.right.isBlack == false && root.left.isBlack == false) {
-                            flipColors(root);
-                        }
-                    }
-                    break;
-                }
-                parent = curr;
-                curr = curr.left;
-            }
+        // 先把节点加入到左偏红黑树当中去
+        int cmp = item.compareTo(node.item);
+        if (cmp < 0) {
+            node.left = insert(node.left, item);
+        } else if (cmp > 0) {
+            node.right = insert(node.right, item);
         }
 
-        return root;
+        // 再考虑加入之后的几种情况
+        // Fix right-leaning red link.
+        if (isRed(node.right) && !isRed(node.left)) {
+            node = rotateLeft(node);
+        }
+        // Fix two consecutive left red links.
+        if (isRed(node.left) && isRed(node.left.left)) {
+            node = rotateRight(node);
+        }
+        // Color flip if both children are red.
+        if (isRed(node.left) && isRed(node.right)) {
+            flipColors(node);
+        }
+
+        return node;
     }
 
 }

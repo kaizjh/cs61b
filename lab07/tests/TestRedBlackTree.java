@@ -159,7 +159,6 @@ public class TestRedBlackTree {
         RedBlackTree<Integer> rbtree = new TestableRedBlackTree();
         rbtree.insert(10);
         rbtree.insert(15);
-        // LLRB tree 不能出现红色的在右边，通过旋转可以解决这个问题
 
         /*
         LLRB Tree Representation:
@@ -355,9 +354,10 @@ public class TestRedBlackTree {
         assertThat(rbtree.root.right.right.item).isEqualTo(11);
 
         assertWithMessage("Number of Calls to Flip Colors after inserting (5, 11, 3, 9, 7, 1, 2) in order").that(callsToFlipColors).isEqualTo(4);
-        // 我认为左旋应该为2次，右旋应该为3次
-//        assertWithMessage("Number of Calls to Rotate Left after inserting (5, 11, 3, 9, 7, 1, 2) in order").that(callsToRotateLeft).isEqualTo(3);
-//        assertWithMessage("Number of Calls to Rotate Right after inserting (5, 11, 3, 9, 7, 1, 2) in order").that(callsToRotateRight).isEqualTo(4);
+        // 下面两个数字值得注意，因为我一开始认为 RotateLeft 应该是3，RotateRight 应该是4，结果是我大错特错
+        // 因为，代码是一步步来的，是很“死”的，所以，有时候它会做一些看起来“重复”的事，正是这种“死板”保证了代码、程序的确定性！
+        assertWithMessage("Number of Calls to Rotate Left after inserting (5, 11, 3, 9, 7, 1, 2) in order").that(callsToRotateLeft).isEqualTo(3);
+        assertWithMessage("Number of Calls to Rotate Right after inserting (5, 11, 3, 9, 7, 1, 2) in order").that(callsToRotateRight).isEqualTo(4);
         
     }
 
