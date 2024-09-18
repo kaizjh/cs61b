@@ -104,12 +104,11 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
         int index = getIndex(key);
         // 遍历，如果找到相同的 key，替换 value 之后，size 不变，返回
-        for (Collection<Node> bucket : buckets) {
-            for (Node n : bucket) {
-                if (n.key.equals(key)) {
-                    n.value = value;
-                    return;
-                }
+        Collection<Node> bucket = buckets[index];
+        for (Node n : bucket) {
+            if (n.key.equals(key)) {
+                n.value = value;
+                return;
             }
         }
         // 如果没有相同的 key，添加新的 node，size 加一，返回
