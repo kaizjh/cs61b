@@ -174,3 +174,218 @@
 //        return (key.hashCode() & 0x7fffffff) % capacity;
 //    }
 //}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//// ChatGPT：
+//
+//package hashmap;
+//
+//import java.util.*;
+//
+///**
+// * A hash table-backed Map implementation.
+// *
+// * Assumes null keys will never be inserted, and does not resize down upon remove().
+// */
+//public class MyHashMap<K, V> implements Map61B<K, V> {
+//
+//    private static final int DEFAULT_INITIAL_CAPACITY = 16;
+//    private static final double DEFAULT_LOAD_FACTOR = 0.75;
+//
+//    private Collection<Node>[] buckets;
+//    private int size;
+//    private double loadFactor;
+//    private int capacity;
+//
+//    /**
+//     * Protected helper class to store key/value pairs.
+//     */
+//    protected class Node {
+//        K key;
+//        V value;
+//
+//        Node(K k, V v) {
+//            key = k;
+//            value = v;
+//        }
+//    }
+//
+//    /** Constructors */
+//    public MyHashMap() {
+//        this(DEFAULT_INITIAL_CAPACITY, DEFAULT_LOAD_FACTOR);
+//    }
+//
+//    public MyHashMap(int initialCapacity) {
+//        this(initialCapacity, DEFAULT_LOAD_FACTOR);
+//    }
+//
+//    public MyHashMap(int initialCapacity, double loadFactor) {
+//        this.capacity = initialCapacity;
+//        this.loadFactor = loadFactor;
+//        this.size = 0;
+//        buckets = new Collection[capacity];
+//        for (int i = 0; i < capacity; i++) {
+//            buckets[i] = createBucket();
+//        }
+//    }
+//
+//    /**
+//     * Creates a bucket, which is a data structure that will store nodes.
+//     */
+//
+//    protected Collection<Node> createBucket() {
+//        return new LinkedList<>();
+//    }
+//
+//    /**
+//     * Returns the bucket index for a given key.
+//     */
+//    private int hash(K key) {
+//        return Math.floorMod(key.hashCode(), capacity);
+//    }
+//
+//    /**
+//     * Resizes the hash map when load factor exceeds the threshold.
+//     */
+//    private void resize() {
+//        int newCapacity = capacity * 2;
+//        Collection<Node>[] newBuckets = new Collection[newCapacity];
+//        for (int i = 0; i < newCapacity; i++) {
+//            newBuckets[i] = createBucket();
+//        }
+//
+//        for (Collection<Node> bucket : buckets) {
+//            for (Node node : bucket) {
+//                int newIndex = Math.floorMod(node.key.hashCode(), newCapacity);
+//                newBuckets[newIndex].add(node);
+//            }
+//        }
+//
+//        buckets = newBuckets;
+//        capacity = newCapacity;
+//    }
+//
+//    /**
+//     * Inserts a key-value pair into the map.
+//     */
+//    @Override
+//    public void put(K key, V value) {
+//        if (key == null) {
+//            throw new IllegalArgumentException("Keys cannot be null");
+//        }
+//
+//        if ((double) size / capacity > loadFactor) {
+//            resize();
+//        }
+//
+//        int index = hash(key);
+//        Collection<Node> bucket = buckets[index];
+//        for (Node node : bucket) {
+//            if (node.key.equals(key)) {
+//                node.value = value;
+//                return;
+//            }
+//        }
+//
+//        bucket.add(new Node(key, value));
+//        size++;
+//    }
+//
+//    /**
+//     * Retrieves the value associated with the key.
+//     */
+//    @Override
+//    public V get(K key) {
+//        int index = hash(key);
+//        Collection<Node> bucket = buckets[index];
+//        for (Node node : bucket) {
+//            if (node.key.equals(key)) {
+//                return node.value;
+//            }
+//        }
+//        return null;
+//    }
+//
+//    /**
+//     * Checks if the map contains the given key.
+//     */
+//    @Override
+//    public boolean containsKey(K key) {
+//        return get(key) != null;
+//    }
+//
+//    /**
+//     * Returns the number of key-value pairs in the map.
+//     */
+//    @Override
+//    public int size() {
+//        return size;
+//    }
+//
+//    /**
+//     * Clears the map.
+//     */
+//    @Override
+//    public void clear() {
+//        buckets = new Collection[capacity];
+//        size = 0;
+//        for (int i = 0; i < capacity; i++) {
+//            buckets[i] = createBucket();
+//        }
+//    }
+//
+//    /**
+//     * Removes the key-value pair with the specified key.
+//     */
+//    @Override
+//    public V remove(K key) {
+//        int index = hash(key);
+//        Collection<Node> bucket = buckets[index];
+//        Iterator<Node> iterator = bucket.iterator();
+//        while (iterator.hasNext()) {
+//            Node node = iterator.next();
+//            if (node.key.equals(key)) {
+//                V value = node.value;
+//                iterator.remove();
+//                size--;
+//                return value;
+//            }
+//        }
+//        return null;
+//    }
+//
+//    /**
+//     * Returns a set of keys.
+//     */
+//    @Override
+//    public Set<K> keySet() {
+//        Set<K> keys = new HashSet<>();
+//        for (Collection<Node> bucket : buckets) {
+//            for (Node node : bucket) {
+//                keys.add(node.key);
+//            }
+//        }
+//        return keys;
+//    }
+//
+//    /**
+//     * Returns an iterator over the keys in the map.
+//     */
+//    @Override
+//    public Iterator<K> iterator() {
+//        return keySet().iterator();
+//    }
+//}

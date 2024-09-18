@@ -27,22 +27,19 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     /* Instance Variables */
     private Collection<Node>[] buckets;
     // You should probably define some more!
-
-
     private double loadFactor = 0.75;
     private int capacity = 16;
     private int size = 0;
     private final int resizeFactor = 2;
-    private Collection[] hashTable;
 
     /** Constructors */
     public MyHashMap() {
-        hashTable = new Collection[capacity];
+        buckets = new Collection[capacity];
     }
 
     public MyHashMap(int initialCapacity) {
         capacity = initialCapacity;
-        hashTable = new Collection[capacity];
+        buckets = new Collection[capacity];
     }
 
     /**
@@ -55,7 +52,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     public MyHashMap(int initialCapacity, double loadFactor) {
         capacity = initialCapacity;
         this.loadFactor = loadFactor;
-        hashTable = new Collection[capacity];
+        buckets = new Collection[capacity];
     }
 
     /**
@@ -90,11 +87,11 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     public void put(K key, V value) {
         int hashKey = getIndex(key);
         // 如果已经有 bucket，遍历，如果找到相同的 key，替换 value 之后，size 不变，返回
-        if (hashTable[hashKey] != null) {
-            Collection<Node> buckets = hashTable[hashKey];
-            for (Node bucket : buckets) {
-                if (bucket.key.equals(key)) {
-                    bucket.value = value;
+        if (buckets[hashKey] != null) {
+            Collection<Node> bucket = buckets[hashKey];
+            for (Node n : bucket) {
+                if (n.key.equals(key)) {
+                    n.value = value;
                     return;
                 }
             }
@@ -102,17 +99,17 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
         // 如果不是替换，那么，先判断是否需要 resize
         if ((double) size / capacity > loadFactor) {
-            resize(hashTable);
+            resize();
             hashKey = getIndex(key); // resize 之后需要新的 hash key
         }
 
         // 再判断是否需要创建新的 bucket
-        if (hashTable[hashKey] == null) {
-            hashTable[hashKey] = createBucket();
+        if (buckets[hashKey] == null) {
+            buckets[hashKey] = createBucket();
         }
         // 再添加新的 node，size 加一，返回
         Node newNode = new Node(key, value);
-        hashTable[hashKey].add(newNode);
+        buckets[hashKey].add(newNode);
         size += 1;
         return;
     }
@@ -120,13 +117,13 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     @Override
     public V get(K key) {
         int hashKey = getIndex(key);
-        if (hashTable[hashKey] == null) {
+        if (buckets[hashKey] == null) {
             return null;
         }
-        Collection<Node> buckets = hashTable[hashKey];
-        for (Node bucket : buckets) {
-            if (bucket.key.equals(key)) {
-                return bucket.value;
+        Collection<Node> bucket = buckets[hashKey];
+        for (Node n : bucket) {
+            if (n.key.equals(key)) {
+                return n.value;
             }
         }
         return null;
@@ -135,12 +132,12 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     @Override
     public boolean containsKey(K key) {
         int hashKey = getIndex(key);
-        if (hashTable[hashKey] == null) {
+        if (buckets[hashKey] == null) {
             return false;
         }
-        Collection<Node> buckets = hashTable[hashKey];
-        for (Node bucket : buckets) {
-            if (bucket.key.equals(key)) {
+        Collection<Node> bucket = buckets[hashKey];
+        for (Node n : bucket) {
+            if (n.key.equals(key)) {
                 return true;
             }
         }
@@ -154,8 +151,8 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     @Override
     public void clear() {
-        for (int i = 0; i < hashTable.length; i++) {
-            hashTable[i] = null;
+        for (int i = 0; i < buckets.length; i++) {
+            buckets[i] = null;
         }
         size = 0;
     }
@@ -184,17 +181,22 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      *  multiply the capacity with the resizeFactor
      *  rehash all the item in the hashTable, modulo-ing them by the new number of buckets.
      * */
-    private void resize(Collection[] hashTableCopy) {
+    private void resize() {
         capacity *= resizeFactor;
-        hashTable = new Collection[capacity];
-        size = 0;
-        for (int i = 0; i < hashTableCopy.length; i++) {
-            if (hashTableCopy[i] != null) {
-                Collection<Node> buckets = hashTableCopy[i];
-                for (Node bucket : buckets) {
-                    put(bucket.key, bucket.value);
+        Collection[] newBuckets = new Collection[capacity];
+        // 新哈希表的初始化
+        for (int i = 0; i < capacity; i++) {
+            newBuckets[i] = createBucket();
+        }
+
+        // 遍历旧哈希表，rehash 之后加入新哈希表中
+        for (int i = 0; i < buckets.length; i++) {
+            if (buckets[i] != null) {
+                for (Node n : buckets[i]) {
+                    newBuckets[getIndex(n.key)].add(n);
                 }
             }
         }
+        buckets = newBuckets;
     }
 }
