@@ -71,4 +71,15 @@ public class TestMyHashMapExtra {
         assertThat(values).containsExactlyElementsIn(keySet);
         assertThat(keySet).containsExactlyElementsIn(values);
     }
+
+    @Test
+    public void testIterator() {
+        MyHashMap<String, Integer> b = new MyHashMap<>();
+        for (int i = 0; i < 14; i++) {
+            b.put("hi" + i, 1);
+        }
+        for (String s : b) {
+            System.out.println(s);
+        }
+    }
 }

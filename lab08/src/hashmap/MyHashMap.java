@@ -159,23 +159,40 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     @Override
     public Set<K> keySet() {
-        return Set.of();
+        HashSet<K> s = new HashSet<>();
+        for (int i = 0; i < buckets.length; i++) {
+            if (buckets[i] != null) {
+                for (Node n : buckets[i]) {
+                    s.add(n.key);
+                }
+            }
+        }
+        return s;
     }
 
     @Override
     public V remove(K key) {
-        return null;
+        V returnValue = null;
+        for (int i = 0; i < buckets.length; i++) {
+            if (buckets[i] != null) {
+                for (Node n : buckets[i]) {
+                    if (n.key.equals(key)) {
+                        returnValue = n.value;
+                        buckets[i].remove(n);
+                    }
+                }
+            }
+        }
+        return returnValue;
     }
 
     @Override
     public Iterator<K> iterator() {
-        return null;
+        return keySet().iterator();
     }
 
     /** A helper function, converting key to hashTable index. */
-    private int getIndex(K key) {
-        return Math.floorMod(key.hashCode(), capacity);
-    }
+    private int getIndex(K key) { return Math.floorMod(key.hashCode(), capacity); }
 
     /** A helper function, for put() to resize
      *  multiply the capacity with the resizeFactor
