@@ -1,0 +1,104 @@
+TestMyHashMapBuckets.java
+
+During this test, we are trying out hash tables with different data structures for each of the buckets,
+and see empirically if there is an asymptotic difference between using different data structures as hash table buckets.
+
+从结果上来看（测试次数应该是100000），最影响 MyHashMap 的时间消耗的函数是 resize（因为这个resize的测试消耗时间最长）：
+tests.hashmap.TestMyHashMapBuckets#resizeTest   518ms
+1. LinkedList                                   126ms
+2. ArrayList                                    86ms
+3. HashSet                                      104ms
+4. Stack                                        99ms
+5.ArrayDeque                                    106ms
+
+从上述数据中可以看出，各种数据结构对于 MyHashMap 的性能来说差别不大，应该可以说：
+there is no asymptotic difference between using different data structures as hash table buckets.
+
+但是，值得注意的是，LinkedList在几乎所有测试中的表现都是最差的，在 tests.hashmap.TestMyHashMapBuckets#sanityClearTest 中的表现的尤为差劲：
+LinkedList在该测试中用时58ms，相较与其他数据结构的 1ms - 8ms，我认为这是一个非常差劲的表现
+
+
+
+
+InsertRandomSpeedTest.java
+This program inserts random Strings of length L into different types of maps as <String, Integer> pairs.
+
+What would you like L to be?: 10
+
+Enter # strings to insert into ULLMap: 29999
+ULLMap: 3.02 sec
+
+Enter # strings to insert into your MyHashMap: 999999
+MyHashMap: 0.70 sec
+
+Enter # strings to insert into Java's HashMap: 999999
+Java's Built-in HashMap: 0.37 sec
+
+Would you like to try more timed-tests? (y/n)y
+
+Enter # strings to insert into ULLMap: 49999
+--Stack Overflow -- couldn't add 49999 strings of length 10.
+
+Enter # strings to insert into your MyHashMap: 9999999
+MyHashMap: 8.47 sec
+
+Enter # strings to insert into Java's HashMap: 9999999
+Java's Built-in HashMap: 4.55 sec
+
+
+InsertInOrderSpeedTest.java
+This program inserts lexicographically increasing Stringsinto Maps as <String, Integer> pairs.
+
+Enter # strings to insert into ULLMap: 30000
+ULLMap: 4.13 sec
+
+Enter # strings to insert into MyHashMap: 9999999
+MyHashMap: 6.00 sec
+
+Enter # strings to insert into Java's HashMap: 9999999
+Java's Built-in HashMap: 2.09 sec
+
+Would you like to try more timed-tests? (y/n): y
+
+Enter # strings to insert into ULLMap: 32500
+--Stack Overflow -- couldn't add 32500 strings.
+
+Enter # strings to insert into MyHashMap: 99999999
+Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+
+Enter # strings to insert into Java's HashMap: 99999999
+Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+
+结论：从上述两个Test的结果，对比lab06的结果，可以看出，与最先进的TreeMap 相比，最先进的HashMap 相对容易实现，
+甚至在数据量急剧增大的时候，MyHashMap 和java自带的HashMap 的时间消耗相差也不太大，这非常好。 另外，ULLMap 一如既往的差劲。
+也许BSTHashMap 可以减少HashMap 在数据量较大时候的时间消耗，但是这意味着复杂——写代码的复杂，空间消耗的更多。
+
+
+
+
+
+
+BucketsSpeedTest.java
+This program inserts random Strings of length L
+ into different types of maps as <String, Integer> pairs.
+
+What would you like L to be?: 10
+
+Enter # strings to insert into each map: 999999
+MyHashMap with ArrayList buckets: 0.88 sec
+MyHashMap with LinkedList buckets: 0.83 sec
+MyHashMap with HashSet buckets: 1.39 sec
+MyHashMap with Stack buckets: 1.13 sec
+MyHashMap with ArrayDeque buckets: 0.91 sec
+
+Would you like to try more timed-tests? (y/n)y
+
+Enter # strings to insert into each map: 9999999
+MyHashMap with ArrayList buckets: 10.81 sec
+MyHashMap with LinkedList buckets: 10.55 sec
+MyHashMap with HashSet buckets: 19.14 sec
+MyHashMap with Stack buckets: 11.57 sec
+MyHashMap with ArrayDeque buckets: 14.22 sec
+
+结论：可以看出，HashSet 在这里耗时最多，根据Lab08 所说，这是因为HashSet 有着更高明的查找方式，但是这个测试没用，
+所以这里HashSet 的表现不佳，如果HashSet 能够使用常数搜索，我认为时间消耗会大大减少。

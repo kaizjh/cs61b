@@ -167,13 +167,13 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     @Override
     public V remove(K key) {
         V returnValue = null;
-        for (int i = 0; i < buckets.length; i++) {
-            if (buckets[i] != null) {
-                for (Node n : buckets[i]) {
-                    if (n.key.equals(key)) {
-                        returnValue = n.value;
-                        buckets[i].remove(n);
-                    }
+        for (Collection<Node> bucket : buckets) {
+            for (Node n : bucket) {
+                if (n.key.equals(key)) {
+                    returnValue = n.value;
+                    bucket.remove(n);
+                    size -= 1;
+                    break;
                 }
             }
         }
