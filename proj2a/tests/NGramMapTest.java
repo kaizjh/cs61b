@@ -16,6 +16,7 @@ import static com.google.common.truth.Truth.assertThat;
 public class NGramMapTest {
     @Test
     public void testCountHistory() {
+        System.out.println(System.getProperty("user.dir"));
         NGramMap ngm = new NGramMap(SHORT_WORDS_FILE, TOTAL_COUNTS_FILE);
         List<Integer> expectedYears = new ArrayList<>
                 (Arrays.asList(2005, 2006, 2007, 2008));
@@ -71,6 +72,30 @@ public class NGramMapTest {
 
         double expectedFishPlusDogWeight1865 = (136497.0 + 75819.0) / 2563919231.0;
         assertThat(fishPlusDogWeight.get(1865)).isWithin(1E-10).of(expectedFishPlusDogWeight1865);
+    }
+
+    @Test
+    /** Almost the same test as testOnLargeFile(), but test with a small file.
+     *  It saved me some time, especially since I needed to read the file multiple times.
+     */
+    public void testOnSmallFile() {
+        // creates an NGramMap from a small dataset
+        NGramMap ngm = new NGramMap(SHORT_WORDS_FILE,
+                TOTAL_COUNTS_FILE);
+
+        TimeSeries fishWeight = ngm.weightHistory("airport", 2000, 2010);
+        assertThat(fishWeight.get(2008)).isWithin(1E-7).of(173294.0/28752030034.0);
+
+        TimeSeries dogCount = ngm.countHistory("dog", 1850, 1876);
+        assertThat(dogCount.years()).isEmpty();
+
+        List<String> fishAndDog = new ArrayList<>();
+        fishAndDog.add("airport");
+        fishAndDog.add("wandered");
+        TimeSeries fishPlusDogWeight = ngm.summedWeightHistory(fishAndDog, 2000, 2010);
+
+        double expectedFishPlusDogWeight1865 = (173294.0 + 171015.0) / 28752030034.0;
+        assertThat(fishPlusDogWeight.get(2008)).isWithin(1E-10).of(expectedFishPlusDogWeight1865);
     }
 
 }  

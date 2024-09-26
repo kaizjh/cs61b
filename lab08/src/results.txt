@@ -100,5 +100,5 @@ MyHashMap with HashSet buckets: 19.14 sec
 MyHashMap with Stack buckets: 11.57 sec
 MyHashMap with ArrayDeque buckets: 14.22 sec
 
-结论：可以看出，HashSet 在这里耗时最多，根据Lab08 所说，这是因为HashSet 有着更高明的查找方式，但是这个测试没用，
+结论：可以看出，HashSet 在这里耗时最多，根据Lab08 所说，这是因为HashSet 有着更高明的查找方式，但是没有用在这个测试中，
 所以这里HashSet 的表现不佳，如果HashSet 能够使用常数搜索，我认为时间消耗会大大减少。

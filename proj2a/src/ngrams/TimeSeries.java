@@ -1,5 +1,7 @@
 package ngrams;
 
+import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -31,6 +33,11 @@ public class TimeSeries extends TreeMap<Integer, Double> {
     public TimeSeries(TimeSeries ts, int startYear, int endYear) {
         super();
         // TODO: Fill in this constructor.
+        for (int key : ts.keySet()) {
+            if (key >= startYear && key <= endYear) {
+                this.put(key, ts.get(key));
+            }
+        }
     }
 
     /**
@@ -38,7 +45,7 @@ public class TimeSeries extends TreeMap<Integer, Double> {
      */
     public List<Integer> years() {
         // TODO: Fill in this method.
-        return null;
+        return keySet().stream().toList();
     }
 
     /**
@@ -47,7 +54,13 @@ public class TimeSeries extends TreeMap<Integer, Double> {
      */
     public List<Double> data() {
         // TODO: Fill in this method.
-        return null;
+        List lst = new ArrayList();
+        List returnList = new ArrayList();
+        lst = years();
+        for (Object year : lst) {
+            returnList.add(get(year));
+        }
+        return returnList;
     }
 
     /**
@@ -61,7 +74,19 @@ public class TimeSeries extends TreeMap<Integer, Double> {
      */
     public TimeSeries plus(TimeSeries ts) {
         // TODO: Fill in this method.
-        return null;
+        TimeSeries returnTS = new TimeSeries();
+        for (int k1: this.keySet()) {
+            returnTS.put(k1, this.get(k1));
+        }
+        for (int k2: ts.keySet()) {
+            if (returnTS.containsKey(k2)) {
+                double value = returnTS.get(k2) + ts.get(k2);
+                returnTS.put(k2, value);
+            } else {
+                returnTS.put(k2, ts.get(k2));
+            }
+        }
+        return returnTS;
     }
 
     /**
@@ -75,7 +100,20 @@ public class TimeSeries extends TreeMap<Integer, Double> {
      */
     public TimeSeries dividedBy(TimeSeries ts) {
         // TODO: Fill in this method.
-        return null;
+        TimeSeries returnTS = new TimeSeries();
+        for (int k1: this.keySet()) {
+            if (!ts.containsKey(k1)) {
+                throw new IllegalArgumentException();
+            }
+            returnTS.put(k1, this.get(k1));
+        }
+        for (int k2: ts.keySet()) {
+            if (returnTS.containsKey(k2)) {
+                double value = returnTS.get(k2) / ts.get(k2);
+                returnTS.put(k2, value);
+            }
+        }
+        return returnTS;
     }
 
     // TODO: Add any private helper methods.
