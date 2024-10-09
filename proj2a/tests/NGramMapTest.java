@@ -16,7 +16,8 @@ import static com.google.common.truth.Truth.assertThat;
 public class NGramMapTest {
     @Test
     public void testCountHistory() {
-        System.out.println(System.getProperty("user.dir"));
+        // 一个小技巧，通过打印当前工作目录判断是否有问题。
+        // System.out.println(System.getProperty("user.dir"));
         NGramMap ngm = new NGramMap(SHORT_WORDS_FILE, TOTAL_COUNTS_FILE);
         List<Integer> expectedYears = new ArrayList<>
                 (Arrays.asList(2005, 2006, 2007, 2008));
@@ -47,7 +48,7 @@ public class NGramMapTest {
     @Test
     public void testOnLargeFile() {
         // creates an NGramMap from a large dataset
-        NGramMap ngm = new NGramMap(TOP_14337_WORDS_FILE,
+        NGramMap ngm = new NGramMap(TOP_49887_WORDS_FILE,
                 TOTAL_COUNTS_FILE);
 
         // returns the count of the number of occurrences of fish per year between 1850 and 1933.
