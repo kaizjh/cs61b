@@ -26,10 +26,10 @@ public class NGramMap {
     /**
      * Constructs an NGramMap from WORDSFILENAME and COUNTSFILENAME.
      */
-    public NGramMap(String wordsFilename, String countsFilename) {
+    public NGramMap(String wordFile, String countFile) {
         // TODO: Fill in this constructor. See the "NGramMap Tips" section of the spec for help.
         wordYearNumber = new HashMap<>();
-        In words = new In(wordsFilename);
+        In words = new In(wordFile);
         while (words.hasNextLine()) {
             String[] splitLine = words.readLine().split("\t");
             if (wordYearNumber.containsKey(splitLine[0])) {
@@ -42,7 +42,7 @@ public class NGramMap {
         }
 
         yearTotalNumber = new TimeSeries();
-        In counts = new In(countsFilename);
+        In counts = new In(countFile);
         while(counts.hasNextLine()) {
             String[] splitLine = counts.readLine().split(",");
             yearTotalNumber.put(Integer.parseInt(splitLine[0]), Double.parseDouble(splitLine[1]));

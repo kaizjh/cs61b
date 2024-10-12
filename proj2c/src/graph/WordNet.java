@@ -21,7 +21,6 @@ public class WordNet {
     public void fileToGraph() {
 
         // System.out.println(System.getProperty("user.dir"));
-
         while (!inSynsets.isEmpty()) {
             String nextLine = inSynsets.readLine();
             String[] splitLine = nextLine.split(",");
