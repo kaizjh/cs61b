@@ -41,7 +41,7 @@ public class WordNet {
     }
 
     public List<String> hyponyms(String word) {
-        ArrayList<Integer> ids = graph.getIds(word);
+        List<Integer> ids = graph.getIds(word);
         List<String> returnString = new ArrayList<>();
         for (int i : ids) {
             List<String> s0 = graph.getChildren(i);
